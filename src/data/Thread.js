@@ -309,7 +309,15 @@ class Thread {
       .update({
         status: THREAD_STATUS.CLOSED
       });
+    // message them
+    const dmChannel = await this.getDMChannel();
+    if (! dmChannel) {
+      throw new Error('Could not open DMs with the user. They may have blocked the bot or set their privacy settings higher.');
+    }
 
+    // Send the DM
+    await dmChannel.createMessage("**Support**: This thread has been closed");
+    
     // Delete channel
     const channel = bot.getChannel(this.channel_id);
     if (channel) {
